@@ -1,5 +1,5 @@
-import { allowMethods, readJson, sendJson } from '../utils/request.js'
-import { resolvePatientByDniAndFace } from '../utils/patients.js'
+import { allowMethods, readJson, sendJson } from '../../lib/api-utils/request.js'
+import { resolvePatientByDniAndFace } from '../../lib/api-utils/patients.js'
 
 export default async function handler(req, res) {
   if (!allowMethods(req, res, ['POST'])) {

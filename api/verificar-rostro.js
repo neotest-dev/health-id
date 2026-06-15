@@ -1,6 +1,6 @@
-import { allowMethods, readJson, requireProfile, sendJson } from './utils/request.js'
-import { resolvePatientByDniAndFace } from './utils/patients.js'
-import { getAdminSupabase } from './utils/supabase.js'
+import { allowMethods, readJson, requireProfile, sendJson } from '../lib/api-utils/request.js'
+import { resolvePatientByDniAndFace } from '../lib/api-utils/patients.js'
+import { getAdminSupabase } from '../lib/api-utils/supabase.js'
 
 export default async function handler(req, res) {
   if (!allowMethods(req, res, ['POST'])) {

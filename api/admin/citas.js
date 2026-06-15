@@ -1,4 +1,4 @@
-import { allowMethods, requireProfile, sendJson } from '../utils/request.js'
+import { allowMethods, requireProfile, sendJson } from '../../lib/api-utils/request.js'
 
 export default async function handler(req, res) {
   if (!allowMethods(req, res, ['GET'])) {

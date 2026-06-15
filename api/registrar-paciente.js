@@ -4,9 +4,9 @@ import {
   generateAESKey,
   generateRSAKeyPair,
   hashLookupValue,
-} from './utils/crypto.js'
-import { allowMethods, readJson, sendJson } from './utils/request.js'
-import { getAdminSupabase } from './utils/supabase.js'
+} from '../lib/api-utils/crypto.js'
+import { allowMethods, readJson, sendJson } from '../lib/api-utils/request.js'
+import { getAdminSupabase } from '../lib/api-utils/supabase.js'
 
 export default async function handler(req, res) {
   if (!allowMethods(req, res, ['POST'])) {

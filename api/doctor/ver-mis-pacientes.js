@@ -1,4 +1,4 @@
-import { allowMethods, requireProfile, sendJson } from '../utils/request.js'
+import { allowMethods, requireProfile, sendJson } from '../../lib/api-utils/request.js'
 
 function applyTimingHeaders(res, timings) {
   res.setHeader('x-healthid-auth-verify-jwt', String(timings.verifyJwt || 0))

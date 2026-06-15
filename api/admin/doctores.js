@@ -1,4 +1,4 @@
-import { allowMethods, readJson, requireProfile, sendJson } from '../utils/request.js'
+import { allowMethods, readJson, requireProfile, sendJson } from '../../lib/api-utils/request.js'
 
 function doctorEmailFromDni(dni) {
   return `${String(dni).trim()}@doctor.healthid.local`
