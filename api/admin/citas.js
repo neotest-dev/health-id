@@ -35,11 +35,9 @@ export default async function handler(req, res) {
     if (patientsResult.error) {
       throw new Error(patientsResult.error.message)
     }
-
     if (doctorsResult.error) {
       throw new Error(doctorsResult.error.message)
     }
-
     if (specialtiesResult.error) {
       throw new Error(specialtiesResult.error.message)
     }

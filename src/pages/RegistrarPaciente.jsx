@@ -47,7 +47,7 @@ function RegistrarPaciente() {
   useEffect(() => {
     async function loadEspecialidades() {
       try {
-        const data = await apiRequest('/api/admin/listar-especialidades')
+        const data = await apiRequest('/api/admin/especialidades')
         setEspecialidades(data.especialidades || [])
       } catch (requestError) {
         setError(requestError.message)

@@ -45,10 +45,10 @@ function AdminPanel() {
 
   async function loadProtectedData(token) {
     const [doctorsData, specialtiesData, appointmentsData, availabilityData] = await Promise.all([
-      apiRequest('/api/admin/listar-doctores', { token }),
-      apiRequest('/api/admin/listar-especialidades'),
-      apiRequest('/api/admin/listar-citas', { token }),
-      apiRequest('/api/admin/listar-disponibilidades', { token }),
+      apiRequest('/api/admin/doctores', { token }),
+      apiRequest('/api/admin/especialidades'),
+      apiRequest('/api/admin/citas', { token }),
+      apiRequest('/api/admin/disponibilidades', { token }),
     ])
 
     setDoctors(doctorsData.doctores || [])
@@ -70,7 +70,7 @@ function AdminPanel() {
     setSuccess('')
 
     try {
-      await apiRequest('/api/admin/crear-especialidad', {
+      await apiRequest('/api/admin/especialidades', {
         method: 'POST',
         token: session.access_token,
         body: specialtyForm,
@@ -89,7 +89,7 @@ function AdminPanel() {
     setSuccess('')
 
     try {
-      const data = await apiRequest('/api/admin/crear-doctor', {
+      const data = await apiRequest('/api/admin/doctores', {
         method: 'POST',
         token: session.access_token,
         body: doctorForm,
@@ -108,7 +108,7 @@ function AdminPanel() {
     setSuccess('')
 
     try {
-      await apiRequest('/api/admin/crear-disponibilidad', {
+      await apiRequest('/api/admin/disponibilidades', {
         method: 'POST',
         token: session.access_token,
         body: availabilityForm,
