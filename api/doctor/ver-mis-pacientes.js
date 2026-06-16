@@ -40,7 +40,7 @@ export default async function handler(req, res) {
     const [detailsResult, citasResult] = await Promise.all([
       supabase
         .from('doctor_details')
-        .select('turno, especialidades(nombre)')
+        .select('especialidades(nombre)')
         .eq('profile_id', profile.id)
         .single(),
       supabase
@@ -69,7 +69,6 @@ export default async function handler(req, res) {
     return respond(200, {
       doctor: {
         fullName: profile.full_name,
-        turno: details.turno,
         especialidad: details.especialidades?.nombre || 'Sin especialidad',
       },
       summary: {

@@ -32,7 +32,7 @@ export default async function handler(req, res) {
       return sendJson(res, 200, { profile, details, especialidades })
     }
 
-    const { fullName, especialidadId, turno, newPassword } = await readJson(req)
+    const { fullName, especialidadId, newPassword } = await readJson(req)
 
     if (newPassword && String(newPassword).length < 8) {
       return sendJson(res, 400, { error: 'La nueva contrasena debe tener al menos 8 caracteres.' })
@@ -51,7 +51,6 @@ export default async function handler(req, res) {
       .from('doctor_details')
       .update({
         especialidad_id: especialidadId,
-        turno,
         updated_at: new Date().toISOString(),
       })
       .eq('profile_id', profile.id)

@@ -30,8 +30,3 @@ export function doctorEmailFromDni(dni) {
 
   return `${cleaned}@doctor.healthid.local`
 }
-
-export const TURNOS = [
-  { value: 'manana', label: 'Mañana' },
-  { value: 'tarde', label: 'Tarde' },
-]

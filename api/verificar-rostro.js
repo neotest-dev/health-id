@@ -19,7 +19,7 @@ export default async function handler(req, res) {
     const { datos, cita } = await resolvePatientByDniAndFace(dni, descriptorFacial)
 
     if (!cita || cita.doctor_profile_id !== profile.id) {
-      return sendJson(res, 403, { error: 'Este paciente no pertenece al turno del doctor autenticado.' })
+      return sendJson(res, 403, { error: 'Este paciente no tiene una cita asignada con el doctor autenticado.' })
     }
 
     const supabase = getAdminSupabase()

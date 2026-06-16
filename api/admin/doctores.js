@@ -29,7 +29,7 @@ export default async function handler(req, res) {
       if (doctorIds.length) {
         const { data: details, error: detailsError } = await supabase
           .from('doctor_details')
-          .select('profile_id, turno, especialidad_id')
+          .select('profile_id, especialidad_id')
           .in('profile_id', doctorIds)
 
         if (detailsError) {
@@ -56,7 +56,6 @@ export default async function handler(req, res) {
           (details || []).map((detail) => [
             detail.profile_id,
             {
-              turno: detail.turno,
               especialidadId: detail.especialidad_id || null,
               especialidad: detail.especialidad_id ? specialtiesById.get(detail.especialidad_id) || null : null,
             },
@@ -69,7 +68,6 @@ export default async function handler(req, res) {
           id: doctor.id,
           dni: doctor.dni,
           full_name: doctor.full_name,
-          turno: detailsByProfileId.get(doctor.id)?.turno || null,
           especialidad_id: detailsByProfileId.get(doctor.id)?.especialidadId || null,
           especialidad: detailsByProfileId.get(doctor.id)?.especialidad || null,
         })),
@@ -78,8 +76,8 @@ export default async function handler(req, res) {
 
     const { dni, fullName, especialidadId, turno } = await readJson(req)
 
-    if (!dni || !especialidadId || !turno) {
-      return sendJson(res, 400, { error: 'DNI, especialidad y turno son obligatorios.' })
+    if (!dni || !especialidadId) {
+      return sendJson(res, 400, { error: 'DNI y especialidad son obligatorios.' })
     }
 
     const email = doctorEmailFromDni(dni)
@@ -112,7 +110,7 @@ export default async function handler(req, res) {
       .insert({
         profile_id: createdUser.user.id,
         especialidad_id: especialidadId,
-        turno,
+        turno: turno || 'manana',
       })
 
     if (detailError) {

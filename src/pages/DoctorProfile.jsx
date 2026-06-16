@@ -2,13 +2,12 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Spinner from '../components/Spinner'
 import { useAuth } from '../context/useAuth'
-import { apiRequest, TURNOS } from '../lib/api'
+import { apiRequest } from '../lib/api'
 import { getSupabaseClient } from '../lib/supabaseClient'
 import { 
   IconDoctor, 
   IconUser, 
   IconSpecialty, 
-  IconClock, 
   IconKey, 
   IconAlert, 
   IconCheck 
@@ -24,7 +23,7 @@ function DoctorProfile() {
   const [success, setSuccess] = useState('')
   const [profileComplete, setProfileComplete] = useState(false)
   const [especialidades, setEspecialidades] = useState([])
-  const [form, setForm] = useState({ fullName: '', especialidadId: '', turno: 'manana', newPassword: '' })
+  const [form, setForm] = useState({ fullName: '', especialidadId: '', newPassword: '' })
 
   useEffect(() => {
     async function loadProfile() {
@@ -40,7 +39,7 @@ function DoctorProfile() {
         const data = await apiRequest('/api/doctor/mi-perfil', { token: accessToken })
 
         const hasCompletedProfile = Boolean(
-          data.profile?.full_name && data.details?.especialidad_id && data.details?.turno,
+          data.profile?.full_name && data.details?.especialidad_id,
         )
         setProfileComplete(hasCompletedProfile)
 
@@ -48,7 +47,6 @@ function DoctorProfile() {
         setForm({
           fullName: data.profile?.full_name || '',
           especialidadId: data.details?.especialidad_id || '',
-          turno: data.details?.turno || 'manana',
           newPassword: '',
         })
       } catch (requestError) {
@@ -79,7 +77,6 @@ function DoctorProfile() {
         body: {
           fullName: form.fullName,
           especialidadId: form.especialidadId,
-          turno: form.turno,
           newPassword: form.newPassword,
         },
       })
@@ -142,44 +139,25 @@ function DoctorProfile() {
           />
         </label>
         
-        <div className="grid gap-5 md:grid-cols-2">
-          <label className="space-y-2 text-sm text-slate-200">
-            <span className="flex items-center gap-1.5 font-semibold">
-              <IconSpecialty className="w-4 h-4 text-cyan-400" />
-              Especialidad
-            </span>
-            <select 
-              name="especialidadId" 
-              value={form.especialidadId} 
-              onChange={updateField} 
-              required 
-              className="w-full rounded-2xl border border-slate-700 bg-slate-950 px-4 py-3.5 text-sm outline-none transition focus:border-cyan-400 font-medium"
-            >
-              <option value="">Selecciona una especialidad</option>
-              {especialidades.map((especialidad) => (
-                <option key={especialidad.id} value={especialidad.id}>{especialidad.nombre}</option>
-              ))}
-            </select>
-          </label>
-          
-          <label className="space-y-2 text-sm text-slate-200">
-            <span className="flex items-center gap-1.5 font-semibold">
-              <IconClock className="w-4 h-4 text-cyan-400" />
-              Turno
-            </span>
-            <select 
-              name="turno" 
-              value={form.turno} 
-              onChange={updateField} 
-              required 
-              className="w-full rounded-2xl border border-slate-700 bg-slate-950 px-4 py-3.5 text-sm outline-none transition focus:border-cyan-400 font-medium"
-            >
-              {TURNOS.map((turno) => (
-                <option key={turno.value} value={turno.value}>{turno.label}</option>
-              ))}
-            </select>
-          </label>
-        </div>
+        <label className="space-y-2 text-sm text-slate-200">
+          <span className="flex items-center gap-1.5 font-semibold">
+            <IconSpecialty className="w-4 h-4 text-cyan-400" />
+            Especialidad
+          </span>
+          <select 
+            name="especialidadId" 
+            value={form.especialidadId} 
+            onChange={updateField} 
+            required 
+            disabled
+            className="w-full rounded-2xl border border-slate-800 bg-slate-900 px-4 py-3.5 text-sm outline-none transition cursor-not-allowed font-medium text-slate-500"
+          >
+            <option value="">Selecciona una especialidad</option>
+            {especialidades.map((especialidad) => (
+              <option key={especialidad.id} value={especialidad.id}>{especialidad.nombre}</option>
+            ))}
+          </select>
+        </label>
         
         <label className="space-y-2 text-sm text-slate-200 block">
           <span className="flex items-center gap-1.5 font-semibold">

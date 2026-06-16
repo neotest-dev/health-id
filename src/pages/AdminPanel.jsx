@@ -21,7 +21,7 @@ function AdminPanel() {
   const [doctors, setDoctors] = useState([])
   const [appointments, setAppointments] = useState([])
   const [availability, setAvailability] = useState([])
-  const [doctorForm, setDoctorForm] = useState({ dni: '', fullName: '', especialidadId: '', turno: 'manana' })
+  const [doctorForm, setDoctorForm] = useState({ dni: '', fullName: '', especialidadId: '' })
   const [specialtyForm, setSpecialtyForm] = useState({ nombre: '', descripcion: '' })
   const [availabilityForm, setAvailabilityForm] = useState({ doctorProfileId: '', fecha: '', cuposTotales: '8' })
 
@@ -94,7 +94,7 @@ function AdminPanel() {
         token: session.access_token,
         body: doctorForm,
       })
-      setDoctorForm({ dni: '', fullName: '', especialidadId: '', turno: 'manana' })
+      setDoctorForm({ dni: '', fullName: '', especialidadId: '' })
       setSuccess(`Médico creado. Email técnico: ${data.doctor.email}. Contraseña temporal: DNI.`)
       await loadProtectedData(session.access_token)
     } catch (requestError) {
@@ -120,12 +120,6 @@ function AdminPanel() {
     } catch (requestError) {
       setError(requestError.message)
     }
-  }
-
-  const formatTurno = (turno) => {
-    if (turno === 'manana') return 'Mañana'
-    if (turno === 'tarde') return 'Tarde'
-    return turno
   }
 
   const formatDate = (value) => {
@@ -191,7 +185,7 @@ function AdminPanel() {
           <SectionIntro
             eyebrow="Accesos"
             title="Alta de medico"
-            description="Crea cuentas tecnicas para nuevos doctores y asignales su especialidad principal y turno base."
+            description="Crea cuentas tecnicas para nuevos doctores y asignales su especialidad principal."
           />
           <form className="rounded-[1.75rem] border border-slate-800 bg-slate-950/60 p-6 shadow-sm" onSubmit={handleCreateDoctor}>
             <div className="grid gap-4 md:grid-cols-2">
@@ -214,7 +208,7 @@ function AdminPanel() {
               </label>
             </div>
             <div className="mt-4 rounded-2xl border border-cyan-500/20 bg-cyan-500/5 px-4 py-3 text-xs leading-6 text-slate-300">
-              El horario del medico ya no se define aqui. La agenda real se abre despues desde <span className="font-semibold text-cyan-300">Disponibilidad diaria</span>.
+              La especialidad base se define aquí, pero la agenda diaria se abre en la sección de <span className="font-semibold text-cyan-300">Disponibilidad diaria</span>.
             </div>
             <button type="submit" className="mt-4 w-full rounded-2xl bg-cyan-400 px-4 py-3.5 text-sm font-bold text-slate-950 transition hover:bg-cyan-300">
               Crear medico
@@ -228,9 +222,6 @@ function AdminPanel() {
                     <p className="font-bold text-white tracking-wide">{doctor.full_name || 'Perfil pendiente'}</p>
                     <p className="mt-0.5 text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">DNI {doctor.dni}</p>
                   </div>
-                  <span className="rounded-full border border-slate-800 bg-slate-900 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-cyan-300">
-                    {formatTurno(doctor.turno) || 'Pendiente'}
-                  </span>
                 </div>
                 <p className="mt-3.5 flex items-center gap-1.5 text-xs font-medium text-slate-400">
                   <IconSpecialty className="h-3.5 w-3.5 shrink-0 text-slate-500" />

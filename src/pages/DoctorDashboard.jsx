@@ -147,7 +147,7 @@ function DoctorDashboard() {
               </div>
               <h1 className="mt-2 text-3xl font-black text-white">{dashboard?.doctor?.fullName || 'Doctor'}</h1>
               <p className="mt-1.5 text-sm text-slate-400 font-medium">
-                {dashboard?.doctor?.especialidad || 'Sin especialidad'} · turno {dashboard?.doctor?.turno || 'pendiente'}
+                {dashboard?.doctor?.especialidad || 'Sin especialidad'}
               </p>
             </div>
             <button 
