@@ -1,16 +1,128 @@
 @import "tailwindcss";
 
 :root {
-  color-scheme: dark;
+  color-scheme: light;
   font-family: Inter, ui-sans-serif, system-ui, sans-serif;
 }
 
 body {
   margin: 0;
   min-width: 320px;
-  background: #020617;
+  background: #f0fdfa;
 }
 
 #root {
   min-height: 100vh;
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes modal-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes biometric-scan {
+  0%, 100% {
+    transform: translateY(-28px);
+    opacity: 0.2;
+  }
+
+  50% {
+    transform: translateY(28px);
+    opacity: 0.9;
+  }
+}
+
+@keyframes nav-drop {
+  from {
+    opacity: 0;
+    transform: translateY(-14px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes nav-shine {
+  from {
+    transform: translateX(-120%) skewX(-18deg);
+  }
+
+  to {
+    transform: translateX(220%) skewX(-18deg);
+  }
+}
+
+@keyframes logo-orbit {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-fade-up {
+  animation: fade-up 520ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.animate-modal-in {
+  animation: modal-in 260ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.animate-biometric-scan {
+  animation: biometric-scan 2.8s ease-in-out infinite;
+}
+
+.animate-nav-drop {
+  animation: nav-drop 520ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.animate-nav-shine {
+  animation: nav-shine 3.8s ease-in-out infinite;
+}
+
+.animate-logo-orbit {
+  animation: logo-orbit 8s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .animate-fade-up,
+  .animate-modal-in,
+  .animate-biometric-scan,
+  .animate-nav-drop,
+  .animate-nav-shine,
+  .animate-logo-orbit {
+    animation: none !important;
+  }
 }

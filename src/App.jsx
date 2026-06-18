@@ -15,8 +15,8 @@ function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
-        <div className="min-h-screen bg-slate-950 text-slate-100 selection:bg-cyan-500 selection:text-slate-950">
-          <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top,_rgba(8,145,178,0.18),_transparent_40%),radial-gradient(circle_at_bottom_right,_rgba(37,99,235,0.16),_transparent_35%)]" />
+        <div className="relative min-h-screen overflow-x-hidden bg-teal-50 text-slate-900 selection:bg-teal-200 selection:text-teal-950">
+          <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top_left,_rgba(34,211,238,0.28),_transparent_36%),radial-gradient(circle_at_bottom_right,_rgba(34,197,94,0.18),_transparent_34%)]" />
           <Navbar />
           <main className="mx-auto flex min-h-[calc(100vh-5rem)] w-full max-w-7xl flex-col px-4 py-8 sm:px-6 lg:px-8">
             <Routes>

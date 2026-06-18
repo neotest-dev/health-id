@@ -5,7 +5,7 @@ function doctorEmailFromDni(dni) {
 }
 
 export default async function handler(req, res) {
-  if (!allowMethods(req, res, ['GET', 'POST'])) {
+  if (!allowMethods(req, res, ['GET', 'POST', 'PUT'])) {
     return
   }
 
@@ -72,6 +72,40 @@ export default async function handler(req, res) {
           especialidad: detailsByProfileId.get(doctor.id)?.especialidad || null,
         })),
       })
+    }
+
+    if (req.method === 'PUT') {
+      const { id, fullName, especialidadId, turno } = await readJson(req)
+
+      if (!id || !especialidadId) {
+        return sendJson(res, 400, { error: 'Id y especialidad son obligatorios.' })
+      }
+
+      const { error: profileError } = await supabase
+        .from('profiles')
+        .update({ full_name: fullName || null })
+        .eq('id', id)
+
+      if (profileError) {
+        throw new Error(profileError.message)
+      }
+
+      const detailPayload = { especialidad_id: especialidadId }
+
+      if (turno) {
+        detailPayload.turno = turno
+      }
+
+      const { error: detailError } = await supabase
+        .from('doctor_details')
+        .update(detailPayload)
+        .eq('profile_id', id)
+
+      if (detailError) {
+        throw new Error(detailError.message)
+      }
+
+      return sendJson(res, 200, { ok: true })
     }
 
     const { dni, fullName, especialidadId, turno } = await readJson(req)

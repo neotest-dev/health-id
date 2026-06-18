@@ -1,12 +1,34 @@
-import { allowMethods, requireProfile, sendJson } from '../../lib/api-utils/request.js'
+import { allowMethods, readJson, requireProfile, sendJson } from '../../lib/api-utils/request.js'
 
 export default async function handler(req, res) {
-  if (!allowMethods(req, res, ['GET'])) {
+  if (!allowMethods(req, res, ['GET', 'PATCH'])) {
     return
   }
 
   try {
     const { supabase } = await requireProfile(req, ['admin'])
+
+    if (req.method === 'PATCH') {
+      const { id, estado } = await readJson(req)
+
+      const allowedStates = ['pendiente', 'programada', 'atendida', 'cancelada']
+
+      if (!id || !allowedStates.includes(estado)) {
+        return sendJson(res, 400, { error: 'Id y estado valido son obligatorios.' })
+      }
+
+      const { error } = await supabase
+        .from('citas')
+        .update({ estado })
+        .eq('id', id)
+
+      if (error) {
+        throw new Error(error.message)
+      }
+
+      return sendJson(res, 200, { ok: true })
+    }
+
     const { data: citas, error: citasError } = await supabase
       .from('citas')
       .select('id, codigo, estado, created_at, fecha_cita, paciente_id, especialidad_id, doctor_profile_id')

@@ -109,14 +109,14 @@ function DoctorProfile() {
   }
 
   return (
-    <section className="mx-auto w-full max-w-3xl rounded-[2rem] border border-slate-800 bg-slate-900/60 p-6 sm:p-8 shadow-xl">
+    <section className="mx-auto w-full max-w-3xl rounded-[2rem] border border-teal-100 bg-white/90 p-6 shadow-xl shadow-teal-950/10 backdrop-blur-sm sm:p-8">
       <div className="space-y-2">
-        <div className="flex items-center gap-2 text-cyan-300">
+        <div className="flex items-center gap-2 text-teal-700">
           <IconDoctor className="w-5 h-5" />
           <p className="text-xs uppercase tracking-[0.3em] font-bold">{profileComplete ? 'Perfil profesional' : 'Configuracion inicial'}</p>
         </div>
-        <h1 className="text-3xl font-black text-white">Perfil del doctor</h1>
-        <p className="text-sm leading-7 text-slate-300 font-medium">
+        <h1 className="text-3xl font-black tracking-tight text-slate-950">Perfil del doctor</h1>
+        <p className="text-sm font-medium leading-7 text-slate-600">
           {profileComplete
             ? 'Actualiza tus datos profesionales o cambia tu contrasena cuando lo necesites.'
             : 'Completa tus datos y cambia la contrasena temporal para operar de forma segura.'}
@@ -124,9 +124,9 @@ function DoctorProfile() {
       </div>
 
       <form className="mt-8 grid gap-5" onSubmit={handleSave}>
-        <label className="space-y-2 text-sm text-slate-200 block">
+        <label className="block space-y-2 text-sm text-slate-700">
           <span className="flex items-center gap-1.5 font-semibold">
-            <IconUser className="w-4 h-4 text-cyan-400" />
+            <IconUser className="w-4 h-4 text-teal-600" />
             Nombre completo
           </span>
           <input 
@@ -135,13 +135,13 @@ function DoctorProfile() {
             onChange={updateField} 
             required 
             placeholder="Ej: Dr. Alejandro Ramos"
-            className="w-full rounded-2xl border border-slate-700 bg-slate-950 px-4 py-3.5 text-sm outline-none transition focus:border-cyan-400 placeholder:text-slate-600 font-medium" 
+            className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3.5 text-sm font-medium text-slate-900 outline-none transition-colors duration-200 placeholder:text-slate-400 focus:border-teal-500 focus:ring-4 focus:ring-teal-100" 
           />
         </label>
         
-        <label className="space-y-2 text-sm text-slate-200">
+        <label className="space-y-2 text-sm text-slate-700">
           <span className="flex items-center gap-1.5 font-semibold">
-            <IconSpecialty className="w-4 h-4 text-cyan-400" />
+            <IconSpecialty className="w-4 h-4 text-teal-600" />
             Especialidad
           </span>
           <select 
@@ -150,7 +150,7 @@ function DoctorProfile() {
             onChange={updateField} 
             required 
             disabled
-            className="w-full rounded-2xl border border-slate-800 bg-slate-900 px-4 py-3.5 text-sm outline-none transition cursor-not-allowed font-medium text-slate-500"
+            className="w-full cursor-not-allowed rounded-2xl border border-slate-200 bg-slate-100 px-4 py-3.5 text-sm font-medium text-slate-500 outline-none transition-colors"
           >
             <option value="">Selecciona una especialidad</option>
             {especialidades.map((especialidad) => (
@@ -159,9 +159,9 @@ function DoctorProfile() {
           </select>
         </label>
         
-        <label className="space-y-2 text-sm text-slate-200 block">
+        <label className="block space-y-2 text-sm text-slate-700">
           <span className="flex items-center gap-1.5 font-semibold">
-            <IconKey className="w-4 h-4 text-cyan-400" />
+            <IconKey className="w-4 h-4 text-teal-600" />
             Nueva contraseña
           </span>
           <input 
@@ -170,20 +170,20 @@ function DoctorProfile() {
             value={form.newPassword} 
             onChange={updateField} 
             placeholder="Mínimo 8 caracteres" 
-            className="w-full rounded-2xl border border-slate-700 bg-slate-950 px-4 py-3.5 text-sm outline-none transition focus:border-cyan-400 placeholder:text-slate-600 font-medium" 
+            className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3.5 text-sm font-medium text-slate-900 outline-none transition-colors duration-200 placeholder:text-slate-400 focus:border-teal-500 focus:ring-4 focus:ring-teal-100" 
           />
         </label>
 
         {error && (
-          <div className="flex items-start gap-2.5 rounded-2xl border border-rose-500/30 bg-rose-500/10 px-4 py-3 text-sm text-rose-200">
-            <IconAlert className="w-5 h-5 text-rose-400 shrink-0 mt-0.5" />
+          <div className="flex items-start gap-2.5 rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">
+            <IconAlert className="w-5 h-5 text-rose-500 shrink-0 mt-0.5" />
             <span>{error}</span>
           </div>
         )}
         
         {success && (
-          <div className="flex items-center gap-2.5 rounded-2xl border border-emerald-500/30 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-200">
-            <IconCheck className="w-5 h-5 text-emerald-400 shrink-0" />
+          <div className="flex items-center gap-2.5 rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
+            <IconCheck className="w-5 h-5 text-emerald-600 shrink-0" />
             <span>{success}</span>
           </div>
         )}
@@ -191,7 +191,7 @@ function DoctorProfile() {
         <button 
           type="submit" 
           disabled={saving} 
-          className="flex items-center justify-center gap-2 w-full rounded-2xl bg-cyan-400 px-4 py-4 text-sm font-bold text-slate-950 transition hover:bg-cyan-300 disabled:cursor-not-allowed disabled:bg-slate-700 disabled:text-slate-400 shadow-lg shadow-cyan-400/10 hover:shadow-cyan-400/20"
+          className="flex min-h-12 w-full cursor-pointer items-center justify-center gap-2 rounded-2xl bg-teal-600 px-4 py-4 text-sm font-bold text-white shadow-lg shadow-teal-600/20 transition-colors duration-200 hover:bg-teal-700 disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-500 focus:outline-none focus:ring-4 focus:ring-teal-100"
         >
           <IconCheck className="w-5 h-5 shrink-0" />
           <span>{saving ? 'Guardando...' : (profileComplete ? 'Actualizar perfil' : 'Guardar perfil')}</span>

@@ -1,7 +1,7 @@
 import { allowMethods, readJson, requireProfile, sendJson } from '../../lib/api-utils/request.js'
 
 export default async function handler(req, res) {
-  if (!allowMethods(req, res, ['GET', 'POST'])) {
+  if (!allowMethods(req, res, ['GET', 'POST', 'PUT', 'PATCH'])) {
     return
   }
 
@@ -51,11 +51,79 @@ export default async function handler(req, res) {
             cupos_totales: item.cupos_totales,
             cupos_disponibles: item.cupos_disponibles,
             activa: item.activa,
+            doctor_profile_id: item.doctor_profile_id,
             doctor: doctor?.full_name || doctor?.dni || 'Sin doctor',
             especialidad: specialtiesById.get(item.especialidad_id) || 'Sin especialidad',
           }
         }),
       })
+    }
+
+    if (req.method === 'PUT') {
+      const { id, fecha, cuposTotales } = await readJson(req)
+
+      if (!id || !fecha || !cuposTotales) {
+        return sendJson(res, 400, { error: 'Id, fecha y cupos son obligatorios.' })
+      }
+
+      const total = Number(cuposTotales)
+      if (!Number.isInteger(total) || total <= 0) {
+        return sendJson(res, 400, { error: 'Los cupos deben ser un numero entero mayor a cero.' })
+      }
+
+      const today = new Date().toISOString().slice(0, 10)
+      if (fecha < today) {
+        return sendJson(res, 400, { error: 'No puedes usar una fecha pasada.' })
+      }
+
+      const { data: currentAvailability, error: currentError } = await supabase
+        .from('disponibilidades')
+        .select('id, cupos_totales, cupos_disponibles')
+        .eq('id', id)
+        .single()
+
+      if (currentError || !currentAvailability) {
+        return sendJson(res, 404, { error: 'No se encontro la disponibilidad.' })
+      }
+
+      const usedSlots = currentAvailability.cupos_totales - currentAvailability.cupos_disponibles
+      if (total < usedSlots) {
+        return sendJson(res, 400, { error: 'No puedes dejar menos cupos de los ya reservados.' })
+      }
+
+      const { error } = await supabase
+        .from('disponibilidades')
+        .update({
+          fecha,
+          cupos_totales: total,
+          cupos_disponibles: total - usedSlots,
+        })
+        .eq('id', id)
+
+      if (error) {
+        throw new Error(error.message)
+      }
+
+      return sendJson(res, 200, { ok: true })
+    }
+
+    if (req.method === 'PATCH') {
+      const { id, activa } = await readJson(req)
+
+      if (!id || typeof activa !== 'boolean') {
+        return sendJson(res, 400, { error: 'Id y estado activo son obligatorios.' })
+      }
+
+      const { error } = await supabase
+        .from('disponibilidades')
+        .update({ activa })
+        .eq('id', id)
+
+      if (error) {
+        throw new Error(error.message)
+      }
+
+      return sendJson(res, 200, { ok: true })
     }
 
     const { doctorProfileId, fecha, cuposTotales } = await readJson(req)

@@ -135,95 +135,96 @@ function DoctorDashboard() {
   return (
     <>
       {signingOut && <SigningOutOverlay detail="Estamos cerrando tu sesion medica y bloqueando el acceso al expediente." />}
-      <div className="grid gap-8 xl:grid-cols-[0.9fr_1.1fr]">
-      {/* Left panel: Info & list of appointments */}
-      <section className="rounded-[2rem] border border-slate-800 bg-slate-900/55 p-6 sm:p-8 flex flex-col justify-between">
-        <div>
-          <div className="flex flex-wrap items-start justify-between gap-4 border-b border-slate-800/80 pb-6">
+      <div className="grid gap-8 xl:grid-cols-[0.92fr_1.08fr]">
+      <section className="overflow-hidden rounded-[2rem] border border-teal-100 bg-white shadow-2xl shadow-teal-950/10">
+        <div className="bg-teal-950 p-6 text-white sm:p-8">
+          <div className="flex flex-wrap items-start justify-between gap-4">
             <div>
-              <div className="flex items-center gap-2 text-cyan-300">
-                <IconDoctor className="w-5 h-5 animate-pulse" />
+              <div className="flex items-center gap-2 text-teal-200">
+                <IconDoctor className="w-5 h-5" />
                 <p className="text-xs uppercase tracking-[0.3em] font-bold">Dashboard médico</p>
               </div>
-              <h1 className="mt-2 text-3xl font-black text-white">{dashboard?.doctor?.fullName || 'Doctor'}</h1>
-              <p className="mt-1.5 text-sm text-slate-400 font-medium">
+              <h1 className="mt-3 text-3xl font-black tracking-tight text-white">{dashboard?.doctor?.fullName || 'Doctor'}</h1>
+              <p className="mt-2 text-sm font-semibold text-teal-100/80">
                 {dashboard?.doctor?.especialidad || 'Sin especialidad'}
               </p>
             </div>
             <button 
               type="button" 
               onClick={handleSignOut} 
-              className="group flex items-center gap-2 rounded-xl border border-slate-700 bg-slate-900/20 px-4 py-2.5 text-xs font-bold uppercase tracking-wider text-slate-300 transition hover:text-rose-400 hover:border-rose-500/30 hover:bg-rose-500/10"
+              className="group flex min-h-11 cursor-pointer items-center gap-2 rounded-2xl border border-white/15 bg-white/10 px-4 py-2.5 text-xs font-bold uppercase tracking-wider text-white transition-colors duration-200 hover:border-rose-200/70 hover:bg-rose-400/15 focus:outline-none focus:ring-4 focus:ring-white/20"
             >
               <IconLogout className="w-4 h-4 shrink-0 transition-transform group-hover:translate-x-1 duration-300" />
               <span>Cerrar sesión</span>
             </button>
           </div>
+        </div>
 
-          {/* Stats grid */}
-          <div className="mt-8 grid gap-4 grid-cols-3">
-            <Stat label="Asignadas" value={String(dashboard?.summary?.total || 0)} icon={IconCalendar} color="text-cyan-400 border-cyan-500/10 bg-cyan-500/5" />
-            <Stat label="Programadas" value={String(dashboard?.summary?.pendientes || 0)} icon={IconClock} color="text-amber-400 border-amber-500/10 bg-amber-500/5" />
-            <Stat label="Atendidas" value={String(dashboard?.summary?.atendidas || 0)} icon={IconCheck} color="text-emerald-400 border-emerald-500/10 bg-emerald-500/5" />
+        <div className="p-6 sm:p-8">
+        <div>
+          <div className="grid gap-4 grid-cols-3">
+            <Stat label="Asignadas" value={String(dashboard?.summary?.total || 0)} icon={IconCalendar} color="text-teal-700 border-teal-100 bg-teal-50" />
+            <Stat label="Programadas" value={String(dashboard?.summary?.pendientes || 0)} icon={IconClock} color="text-amber-700 border-amber-100 bg-amber-50" />
+            <Stat label="Atendidas" value={String(dashboard?.summary?.atendidas || 0)} icon={IconCheck} color="text-emerald-700 border-emerald-100 bg-emerald-50" />
           </div>
 
           <div className="mt-8 space-y-4">
-              <h2 className="text-xl font-bold text-white flex items-center gap-2">
-                <IconClock className="w-5 h-5 text-cyan-400" />
+              <h2 className="text-xl font-black text-slate-950 flex items-center gap-2">
+                <IconClock className="w-5 h-5 text-teal-600" />
                 Agenda programada
               </h2>
             <div className="space-y-3">
               {dashboard?.citas?.length ? dashboard.citas.map((cita) => (
-                <article key={cita.id} className="rounded-2xl border border-slate-800 bg-slate-950/60 p-4 text-sm text-slate-300 hover:border-slate-750 transition-colors">
+                <article key={cita.id} className="rounded-2xl border border-slate-200 bg-white p-4 text-sm text-slate-700 shadow-sm transition-colors duration-200 hover:border-teal-200 hover:bg-teal-50/40">
                   <div className="flex items-center justify-between gap-3">
                     <div>
-                       <p className="font-semibold text-white tracking-wide">{cita.codigo}</p>
+                       <p className="font-black text-slate-950 tracking-wide">{cita.codigo}</p>
                         <p className="text-xs uppercase tracking-[0.2em] text-slate-500 mt-1 font-semibold flex items-center gap-1">
-                          <IconSpecialty className="w-3.5 h-3.5 text-slate-600" />
+                          <IconSpecialty className="w-3.5 h-3.5 text-teal-600" />
                           {cita.especialidad}
                         </p>
                       </div>
-                    <span className="rounded-full border border-slate-800 bg-slate-900/60 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                    <span className="rounded-full border border-teal-100 bg-teal-50 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-teal-700">
                       {cita.estado}
                     </span>
                   </div>
                    <p className="mt-3.5 text-[11px] text-slate-500 font-mono">Fecha: {formatDate(cita.fecha_cita)}</p>
                 </article>
               )) : (
-                <p className="rounded-2xl border border-slate-800 bg-slate-950/40 px-4 py-6 text-sm text-slate-400 text-center font-medium">
+                <p className="rounded-2xl border border-dashed border-teal-200 bg-teal-50 px-4 py-6 text-sm text-teal-700 text-center font-semibold">
                   Aun no tienes citas asignadas.
                 </p>
               )}
             </div>
           </div>
         </div>
+        </div>
       </section>
 
-      {/* Right panel: Scanner and unlock */}
-      <section className="rounded-[2rem] border border-slate-800 bg-slate-900/55 p-6 sm:p-8 flex flex-col justify-between">
+      <section className="flex flex-col justify-between rounded-[2rem] border border-teal-100 bg-white/95 p-6 shadow-2xl shadow-teal-950/10 backdrop-blur-sm sm:p-8">
         <div>
           <div className="space-y-2">
-            <div className="flex items-center gap-2 text-slate-400">
+            <div className="flex items-center gap-2 text-teal-700">
               <IconShield className="w-5 h-5" />
               <p className="text-xs uppercase tracking-[0.3em] font-bold">Desbloqueo de expediente</p>
             </div>
-            <h2 className="text-2xl font-bold text-white">Validar identidad del paciente</h2>
-            <p className="text-sm leading-7 text-slate-300">
+            <h2 className="text-2xl font-black tracking-tight text-slate-950">Validar identidad del paciente</h2>
+            <p className="text-sm leading-7 text-slate-600">
               Introduce el DNI del paciente y escanea su rostro. Si coincide, el sistema descifra el historial clínico.
             </p>
           </div>
 
           <div className="mt-6 space-y-4">
-            <label className="space-y-2 text-sm text-slate-200 block">
+            <label className="space-y-2 text-sm text-slate-700 block">
               <span className="flex items-center gap-1.5 font-semibold">
-                <IconShield className="w-4 h-4 text-cyan-400" />
+                <IconShield className="w-4 h-4 text-teal-600" />
                 DNI del paciente
               </span>
               <input 
                 value={dni} 
                 onChange={(event) => setDni(event.target.value)} 
                 placeholder="Escribe el DNI del paciente"
-                className="w-full rounded-2xl border border-slate-700 bg-slate-950 px-4 py-3.5 text-sm outline-none transition focus:border-cyan-400 placeholder:text-slate-600 font-medium" 
+                className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3.5 text-sm font-medium text-slate-900 outline-none transition-colors duration-200 placeholder:text-slate-400 focus:border-teal-500 focus:ring-4 focus:ring-teal-100" 
               />
             </label>
 
@@ -231,7 +232,7 @@ function DoctorDashboard() {
               type="button" 
               onClick={handleVerify} 
               disabled={verifying} 
-              className="flex items-center justify-center gap-2 w-full rounded-2xl bg-cyan-400 px-4 py-3.5 text-sm font-bold text-slate-950 transition hover:bg-cyan-300 disabled:cursor-not-allowed disabled:bg-slate-700 disabled:text-slate-400 shadow-lg shadow-cyan-400/10 hover:shadow-cyan-400/20"
+              className="flex min-h-12 w-full cursor-pointer items-center justify-center gap-2 rounded-2xl bg-teal-600 px-4 py-3.5 text-sm font-bold text-white shadow-lg shadow-teal-600/20 transition-colors duration-200 hover:bg-teal-700 disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-500 focus:outline-none focus:ring-4 focus:ring-teal-100"
             >
               <IconKey className="w-5 h-5 shrink-0" />
               <span>{verifying ? 'Verificando...' : 'Desbloquear expediente'}</span>
@@ -239,17 +240,17 @@ function DoctorDashboard() {
           </div>
 
           {error && (
-            <div className="mt-4 flex items-start gap-2.5 rounded-2xl border border-rose-500/30 bg-rose-500/10 px-4 py-3 text-sm text-rose-200">
-              <IconAlert className="w-5 h-5 text-rose-400 shrink-0 mt-0.5" />
+            <div className="mt-4 flex items-start gap-2.5 rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">
+              <IconAlert className="w-5 h-5 text-rose-500 shrink-0 mt-0.5" />
               <span>{error}</span>
             </div>
           )}
 
           {verification && (
-            <div className="mt-6 space-y-4 rounded-[1.5rem] border border-emerald-500/30 bg-emerald-500/10 p-5 text-sm text-emerald-100 shadow-inner">
-              <div className="flex items-center justify-between border-b border-emerald-500/20 pb-3">
-                <span className="text-xs uppercase tracking-[0.25em] text-emerald-300 font-bold">Datos clínicos desbloqueados</span>
-                <span className="rounded-full bg-emerald-400/20 px-2 py-0.5 text-[10px] font-bold text-white uppercase tracking-wider">
+            <div className="mt-6 space-y-4 rounded-[1.5rem] border border-emerald-200 bg-emerald-50 p-5 text-sm text-emerald-900 shadow-inner">
+              <div className="flex items-center justify-between border-b border-emerald-200 pb-3">
+                <span className="text-xs uppercase tracking-[0.25em] text-emerald-700 font-bold">Datos clínicos desbloqueados</span>
+                <span className="rounded-full bg-white border border-emerald-200 px-2 py-0.5 text-[10px] font-bold text-emerald-700 uppercase tracking-wider">
                   Éxito
                 </span>
               </div>
@@ -260,18 +261,18 @@ function DoctorDashboard() {
                 <InfoItem label="Estado de cita" value={verification.cita.estado} icon={IconShield} />
               </div>
               <div>
-                <p className="text-xs uppercase tracking-[0.25em] text-emerald-300 font-bold flex items-center gap-1.5 mb-1">
-                  <IconAlert className="w-4 h-4 text-emerald-400" />
+                <p className="text-xs uppercase tracking-[0.25em] text-emerald-700 font-bold flex items-center gap-1.5 mb-1">
+                  <IconAlert className="w-4 h-4 text-emerald-600" />
                   Alergias
                 </p>
-                <p className="text-white bg-slate-950/20 p-3 rounded-xl border border-emerald-400/10">{verification.paciente.alergias}</p>
+                <p className="text-slate-800 bg-white p-3 rounded-xl border border-emerald-100">{verification.paciente.alergias}</p>
               </div>
               <div>
-                <p className="text-xs uppercase tracking-[0.25em] text-emerald-300 font-bold flex items-center gap-1.5 mb-1">
-                  <IconInfo className="w-4 h-4 text-emerald-400" />
+                <p className="text-xs uppercase tracking-[0.25em] text-emerald-700 font-bold flex items-center gap-1.5 mb-1">
+                  <IconInfo className="w-4 h-4 text-emerald-600" />
                   Síntomas
                 </p>
-                <p className="text-white bg-slate-950/20 p-3 rounded-xl border border-emerald-400/10">{verification.paciente.sintomas}</p>
+                <p className="text-slate-800 bg-white p-3 rounded-xl border border-emerald-100">{verification.paciente.sintomas}</p>
               </div>
             </div>
           )}
@@ -288,21 +289,21 @@ function DoctorDashboard() {
 
 function Stat({ label, value, icon: Icon, color }) {
   return (
-    <div className={`rounded-2xl border p-4 flex flex-col items-center justify-center text-center hover:scale-[1.02] transition-transform duration-200 ${color}`}>
+    <div className={`rounded-2xl border p-4 flex flex-col items-center justify-center text-center shadow-sm transition-colors duration-200 ${color}`}>
       <Icon className="w-5 h-5 mb-2" />
-      <p className="text-[10px] uppercase tracking-[0.2em] text-slate-500 font-bold">{label}</p>
-      <p className="mt-2 text-2xl font-black text-white">{value}</p>
+      <p className="text-[10px] uppercase tracking-[0.2em] text-slate-600 font-bold">{label}</p>
+      <p className="mt-2 text-2xl font-black text-slate-950">{value}</p>
     </div>
   )
 }
 
 function InfoItem({ label, value, icon: Icon }) {
   return (
-    <div className="rounded-xl border border-emerald-500/15 bg-slate-950/30 p-3 flex items-center gap-3">
-      {Icon && <Icon className="w-5 h-5 text-emerald-400 shrink-0" />}
+    <div className="rounded-xl border border-emerald-100 bg-white p-3 flex items-center gap-3">
+      {Icon && <Icon className="w-5 h-5 text-emerald-600 shrink-0" />}
       <div>
-        <p className="text-[10px] uppercase tracking-[0.2em] text-emerald-300 font-semibold">{label}</p>
-        <p className="mt-0.5 text-sm font-semibold text-white">{value}</p>
+        <p className="text-[10px] uppercase tracking-[0.2em] text-emerald-700 font-semibold">{label}</p>
+        <p className="mt-0.5 text-sm font-semibold text-slate-950">{value}</p>
       </div>
     </div>
   )
@@ -312,60 +313,60 @@ export default DoctorDashboard
 
 function DoctorDashboardSkeleton() {
   return (
-    <div className="grid gap-8 xl:grid-cols-[0.9fr_1.1fr] animate-pulse">
-      <section className="rounded-[2rem] border border-slate-800 bg-slate-900/55 p-6 sm:p-8">
+    <div className="grid gap-8 xl:grid-cols-[0.92fr_1.08fr] animate-pulse">
+      <section className="rounded-[2rem] border border-teal-100 bg-white p-6 shadow-xl shadow-teal-950/10 sm:p-8">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div className="space-y-3">
-            <div className="h-3 w-32 rounded-full bg-cyan-400/15" />
-            <div className="h-10 w-72 rounded-2xl bg-slate-800" />
-            <div className="h-4 w-56 rounded-full bg-slate-800" />
+            <div className="h-3 w-32 rounded-full bg-teal-100" />
+            <div className="h-10 w-72 rounded-2xl bg-slate-100" />
+            <div className="h-4 w-56 rounded-full bg-slate-100" />
           </div>
-          <div className="h-11 w-36 rounded-full bg-slate-800" />
+          <div className="h-11 w-36 rounded-full bg-slate-100" />
         </div>
 
         <div className="mt-8 grid gap-4 grid-cols-3">
           {Array.from({ length: 3 }).map((_, index) => (
-            <div key={index} className="rounded-3xl border border-slate-800 bg-slate-950/60 p-4">
-              <div className="h-3 w-24 rounded-full bg-slate-800" />
-              <div className="mt-4 h-10 w-16 rounded-xl bg-slate-800" />
+            <div key={index} className="rounded-3xl border border-teal-100 bg-teal-50 p-4">
+              <div className="h-3 w-24 rounded-full bg-teal-100" />
+              <div className="mt-4 h-10 w-16 rounded-xl bg-teal-100" />
             </div>
           ))}
         </div>
 
         <div className="mt-8 space-y-4">
-          <div className="h-7 w-44 rounded-xl bg-slate-800" />
+          <div className="h-7 w-44 rounded-xl bg-slate-100" />
           <div className="space-y-3">
             {Array.from({ length: 3 }).map((_, index) => (
-              <div key={index} className="rounded-2xl border border-slate-800 bg-slate-950/60 p-4">
+              <div key={index} className="rounded-2xl border border-slate-200 bg-white p-4">
                 <div className="flex items-center justify-between gap-3">
                   <div className="space-y-2">
-                    <div className="h-5 w-32 rounded-lg bg-slate-800" />
-                    <div className="h-3 w-24 rounded-full bg-slate-800" />
+                    <div className="h-5 w-32 rounded-lg bg-slate-100" />
+                    <div className="h-3 w-24 rounded-full bg-slate-100" />
                   </div>
-                  <div className="h-7 w-20 rounded-full bg-slate-800" />
+                  <div className="h-7 w-20 rounded-full bg-slate-100" />
                 </div>
-                <div className="mt-4 h-3 w-36 rounded-full bg-slate-800" />
+                <div className="mt-4 h-3 w-36 rounded-full bg-slate-100" />
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="rounded-[2rem] border border-slate-800 bg-slate-900/55 p-6 sm:p-8">
+      <section className="rounded-[2rem] border border-teal-100 bg-white p-6 shadow-xl shadow-teal-950/10 sm:p-8">
         <div className="space-y-3">
-          <div className="h-3 w-40 rounded-full bg-slate-800" />
-          <div className="h-8 w-64 rounded-2xl bg-slate-800" />
-          <div className="h-4 w-full rounded-full bg-slate-800" />
-          <div className="h-4 w-4/5 rounded-full bg-slate-800" />
+          <div className="h-3 w-40 rounded-full bg-teal-100" />
+          <div className="h-8 w-64 rounded-2xl bg-slate-100" />
+          <div className="h-4 w-full rounded-full bg-slate-100" />
+          <div className="h-4 w-4/5 rounded-full bg-slate-100" />
         </div>
         <div className="mt-6 space-y-4">
           <div className="space-y-2">
-            <div className="h-4 w-28 rounded-full bg-slate-800" />
-            <div className="h-12 w-full rounded-2xl bg-slate-800" />
+            <div className="h-4 w-28 rounded-full bg-slate-100" />
+            <div className="h-12 w-full rounded-2xl bg-slate-100" />
           </div>
-          <div className="h-12 w-full rounded-2xl bg-slate-800" />
-          <div className="mt-6 rounded-3xl border border-slate-800 bg-slate-950/60 p-4">
-            <div className="aspect-[4/3] w-full rounded-[1.5rem] bg-slate-800" />
+          <div className="h-12 w-full rounded-2xl bg-slate-100" />
+          <div className="mt-6 rounded-3xl border border-teal-100 bg-teal-50 p-4">
+            <div className="aspect-[4/3] w-full rounded-[1.5rem] bg-teal-100" />
           </div>
         </div>
       </section>

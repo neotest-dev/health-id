@@ -131,15 +131,15 @@ function RegistrarPaciente() {
   }
 
   return (
-    <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
-      <section className="rounded-[2rem] border border-slate-800 bg-slate-900/55 p-6 sm:p-8">
+    <div className="grid gap-8 lg:grid-cols-[1.08fr_0.92fr]">
+      <section className="rounded-[2rem] border border-teal-100 bg-white/90 p-6 shadow-xl shadow-teal-950/10 backdrop-blur-sm sm:p-8">
         <div className="mb-8 space-y-2">
-          <div className="flex items-center gap-2 text-cyan-300">
+          <div className="flex items-center gap-2 text-teal-700">
             <IconCalendar className="w-5 h-5" />
             <p className="text-xs uppercase tracking-[0.3em] font-bold">Registro del paciente</p>
           </div>
-          <h1 className="text-3xl font-black text-white">Nueva cita cifrada</h1>
-          <p className="text-sm leading-7 text-slate-300">
+          <h1 className="text-3xl font-black tracking-tight text-slate-950">Nueva cita cifrada</h1>
+          <p className="text-sm leading-7 text-slate-600">
             Todos los datos clínicos se empaquetan en un JSON y se cifran con AES. La llave AES queda protegida con RSA.
           </p>
         </div>
@@ -156,9 +156,9 @@ function RegistrarPaciente() {
           <TextArea label="Síntomas" name="sintomas" value={form.sintomas} onChange={updateField} required icon={IconInfo} placeholder="Describe los síntomas actuales" />
 
           <div className="grid gap-5 md:grid-cols-2">
-            <label className="space-y-2 text-sm text-slate-200">
+            <label className="space-y-2 text-sm text-slate-700">
               <span className="flex items-center gap-1.5 font-semibold">
-                <IconSpecialty className="w-4 h-4 text-cyan-400" />
+                <IconSpecialty className="w-4 h-4 text-teal-600" />
                 Especialidad
               </span>
               <select
@@ -166,7 +166,7 @@ function RegistrarPaciente() {
                 value={form.especialidadId}
                 onChange={updateField}
                 required
-                className="w-full rounded-2xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm outline-none ring-0 transition focus:border-cyan-400"
+                className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-900 outline-none transition-colors duration-200 focus:border-teal-500 focus:ring-4 focus:ring-teal-100"
               >
                 <option value="">Selecciona una especialidad</option>
                 {especialidades.map((especialidad) => (
@@ -174,9 +174,9 @@ function RegistrarPaciente() {
                 ))}
               </select>
             </label>
-            <label className="space-y-2 text-sm text-slate-200">
+            <label className="space-y-2 text-sm text-slate-700">
               <span className="flex items-center gap-1.5 font-semibold">
-                <IconCalendar className="w-4 h-4 text-cyan-400" />
+                <IconCalendar className="w-4 h-4 text-teal-600" />
                 Fecha disponible
               </span>
               <select
@@ -185,7 +185,7 @@ function RegistrarPaciente() {
                 onChange={updateField}
                 required
                 disabled={!form.especialidadId || loadingDates}
-                className="w-full rounded-2xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm outline-none ring-0 transition focus:border-cyan-400"
+                className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-900 outline-none transition-colors duration-200 disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-500 focus:border-teal-500 focus:ring-4 focus:ring-teal-100"
               >
                 <option value="">Selecciona una fecha</option>
                 {disponibilidades.map((disponibilidad) => (
@@ -200,26 +200,26 @@ function RegistrarPaciente() {
           {loading && <Spinner label="Cargando especialidades..." />}
           {loadingDates && <Spinner label="Buscando fechas disponibles..." />}
           {!loadingDates && form.especialidadId && !disponibilidades.length && (
-            <div className="flex items-start gap-2.5 rounded-2xl border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-sm text-amber-100">
-              <IconCalendar className="mt-0.5 w-5 h-5 shrink-0 text-amber-300" />
+             <div className="flex items-start gap-2.5 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
+               <IconCalendar className="mt-0.5 w-5 h-5 shrink-0 text-amber-600" />
               <span>No hay fechas disponibles para esta especialidad. Pide al admin que abra una nueva fecha.</span>
             </div>
           )}
           {descriptor && (
-            <div className="flex items-center gap-2.5 rounded-2xl border border-emerald-500/30 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-200">
-              <IconCheck className="w-5 h-5 text-emerald-400 shrink-0" />
+            <div className="flex items-center gap-2.5 rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-semibold text-emerald-700">
+              <IconCheck className="w-5 h-5 text-emerald-600 shrink-0" />
               <span>Rostro capturado y listo para cifrar la ficha del paciente.</span>
             </div>
           )}
           {error && (
-            <div className="flex items-start gap-2.5 rounded-2xl border border-rose-500/30 bg-rose-500/10 px-4 py-3 text-sm text-rose-200">
-              <IconAlert className="w-5 h-5 text-rose-400 shrink-0 mt-0.5" />
+            <div className="flex items-start gap-2.5 rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">
+              <IconAlert className="w-5 h-5 text-rose-500 shrink-0 mt-0.5" />
               <span>{error}</span>
             </div>
           )}
           {message && (
-            <div className="flex items-center gap-2.5 rounded-2xl border border-cyan-500/30 bg-cyan-500/10 px-4 py-3 text-sm text-cyan-100">
-              <IconCheck className="w-5 h-5 text-cyan-400 shrink-0" />
+            <div className="flex items-center gap-2.5 rounded-2xl border border-teal-200 bg-teal-50 px-4 py-3 text-sm text-teal-700">
+              <IconCheck className="w-5 h-5 text-teal-600 shrink-0" />
               <span>{message}</span>
             </div>
           )}
@@ -227,7 +227,7 @@ function RegistrarPaciente() {
           <button
             type="submit"
             disabled={submitting || loading || loadingDates}
-            className="flex items-center justify-center gap-2 w-full rounded-2xl bg-cyan-400 px-4 py-4 text-sm font-bold text-slate-950 transition hover:bg-cyan-300 disabled:cursor-not-allowed disabled:bg-slate-700 disabled:text-slate-400 shadow-lg shadow-cyan-400/10 hover:shadow-cyan-400/20"
+            className="flex min-h-12 w-full cursor-pointer items-center justify-center gap-2 rounded-2xl bg-teal-600 px-4 py-4 text-sm font-bold text-white shadow-lg shadow-teal-600/20 transition-colors duration-200 hover:bg-teal-700 disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-500 focus:outline-none focus:ring-4 focus:ring-teal-100"
           >
             <IconCalendar className="w-5 h-5 shrink-0" />
             <span>{submitting ? 'Registrando...' : 'Registrar paciente y cita'}</span>
@@ -235,19 +235,19 @@ function RegistrarPaciente() {
         </form>
       </section>
 
-      <section className="rounded-[2rem] border border-slate-800 bg-slate-900/55 p-6 sm:p-8 flex flex-col justify-between">
+      <section className="self-start rounded-[2rem] border border-teal-100 bg-white/90 p-6 shadow-xl shadow-teal-950/10 backdrop-blur-sm sm:p-8 lg:sticky lg:top-28">
         <div className="mb-6 space-y-2">
-          <div className="flex items-center gap-2 text-slate-400">
+          <div className="flex items-center gap-2 text-teal-700">
             <IconShield className="w-5 h-5" />
             <p className="text-xs uppercase tracking-[0.3em] font-bold">Biometría</p>
           </div>
-          <h2 className="text-2xl font-bold text-white">Captura facial del paciente</h2>
-          <p className="text-sm leading-7 text-slate-300">
-            El descriptor facial se usa para autorizar el descifrado posterior del historial clínico.
+          <h2 className="text-2xl font-black tracking-tight text-slate-950">Captura facial bajo demanda</h2>
+          <p className="text-sm leading-7 text-slate-600">
+            Registra la identidad facial como último paso. La cámara se abre solo con autorización y se apaga al cerrar el modal.
           </p>
         </div>
-        <div className="flex-grow flex flex-col justify-center">
-          <FacialScanner onDescriptorCaptured={setDescriptor} buttonLabel="Escanear rostro" />
+        <div>
+          <FacialScanner onDescriptorCaptured={setDescriptor} buttonLabel="Registrar rostro del paciente" />
         </div>
       </section>
     </div>
@@ -256,24 +256,24 @@ function RegistrarPaciente() {
 
 function Field({ label, icon: Icon, ...props }) {
   return (
-    <label className="space-y-2 text-sm text-slate-200">
+    <label className="space-y-2 text-sm text-slate-700">
       <span className="flex items-center gap-1.5 font-semibold">
-        {Icon && <Icon className="w-4 h-4 text-cyan-400" />}
+        {Icon && <Icon className="w-4 h-4 text-teal-600" />}
         {label}
       </span>
-      <input {...props} className="w-full rounded-2xl border border-slate-700 bg-slate-950 px-4 py-3.5 text-sm outline-none transition focus:border-cyan-400 placeholder:text-slate-600" />
+      <input {...props} className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3.5 text-sm font-medium text-slate-900 outline-none transition-colors duration-200 placeholder:text-slate-400 focus:border-teal-500 focus:ring-4 focus:ring-teal-100" />
     </label>
   )
 }
 
 function TextArea({ label, icon: Icon, ...props }) {
   return (
-    <label className="space-y-2 text-sm text-slate-200">
+    <label className="space-y-2 text-sm text-slate-700">
       <span className="flex items-center gap-1.5 font-semibold">
-        {Icon && <Icon className="w-4 h-4 text-cyan-400" />}
+        {Icon && <Icon className="w-4 h-4 text-teal-600" />}
         {label}
       </span>
-      <textarea {...props} className="w-full rounded-2xl border border-slate-700 bg-slate-950 px-4 py-3.5 text-sm outline-none transition focus:border-cyan-400 placeholder:text-slate-600" />
+      <textarea {...props} className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3.5 text-sm font-medium text-slate-900 outline-none transition-colors duration-200 placeholder:text-slate-400 focus:border-teal-500 focus:ring-4 focus:ring-teal-100" />
     </label>
   )
 }

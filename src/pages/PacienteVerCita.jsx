@@ -52,29 +52,29 @@ function PacienteVerCita() {
 
   return (
     <div className="grid gap-8 lg:grid-cols-[0.95fr_1.05fr]">
-      <section className="rounded-[2rem] border border-slate-800 bg-slate-900/55 p-6 sm:p-8 flex flex-col justify-between">
+      <section className="self-start rounded-[2rem] border border-teal-100 bg-white/90 p-6 shadow-xl shadow-teal-950/10 backdrop-blur-sm sm:p-8 lg:sticky lg:top-28">
         <div>
           <div className="mb-6 space-y-2">
-            <div className="flex items-center gap-2 text-cyan-300">
+            <div className="flex items-center gap-2 text-teal-700">
               <IconUser className="w-5 h-5" />
               <p className="text-xs uppercase tracking-[0.3em] font-bold">Consulta del paciente</p>
             </div>
-            <h1 className="text-3xl font-black text-white">Ver mi cita y expediente</h1>
-            <p className="text-sm leading-7 text-slate-300">
+            <h1 className="text-3xl font-black tracking-tight text-slate-950">Ver mi cita y expediente</h1>
+            <p className="text-sm leading-7 text-slate-600">
               El rostro valida al paciente antes de mostrar la cita y descifrar la información clínica.
             </p>
           </div>
 
           <div className="space-y-4">
-            <label className="space-y-2 text-sm text-slate-200 block">
+            <label className="block space-y-2 text-sm text-slate-700">
               <span className="flex items-center gap-1.5 font-semibold">
-                <IconShield className="w-4 h-4 text-cyan-400" />
+                <IconShield className="w-4 h-4 text-teal-600" />
                 DNI
               </span>
               <input
                 value={dni}
                 onChange={(event) => setDni(event.target.value)}
-                className="w-full rounded-2xl border border-slate-700 bg-slate-950 px-4 py-3.5 text-sm outline-none transition focus:border-cyan-400 placeholder:text-slate-600 font-medium"
+                className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3.5 text-sm font-medium text-slate-900 outline-none transition-colors duration-200 placeholder:text-slate-400 focus:border-teal-500 focus:ring-4 focus:ring-teal-100"
                 placeholder="Ingresa tu DNI"
               />
             </label>
@@ -83,7 +83,7 @@ function PacienteVerCita() {
               type="button"
               onClick={handleCheck}
               disabled={loading}
-              className="flex items-center justify-center gap-2 w-full rounded-2xl bg-cyan-400 px-4 py-3.5 text-sm font-bold text-slate-950 transition hover:bg-cyan-300 disabled:cursor-not-allowed disabled:bg-slate-700 disabled:text-slate-400 shadow-lg shadow-cyan-400/10 hover:shadow-cyan-400/20"
+              className="flex min-h-12 w-full cursor-pointer items-center justify-center gap-2 rounded-2xl bg-teal-600 px-4 py-3.5 text-sm font-bold text-white shadow-lg shadow-teal-600/20 transition-colors duration-200 hover:bg-teal-700 disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-500 focus:outline-none focus:ring-4 focus:ring-teal-100"
             >
               <IconSearch className="w-5 h-5 shrink-0" />
               <span>{loading ? 'Validando identidad...' : 'Consultar mi cita'}</span>
@@ -91,21 +91,21 @@ function PacienteVerCita() {
           </div>
 
           {error && (
-            <div className="mt-4 flex items-start gap-2.5 rounded-2xl border border-rose-500/30 bg-rose-500/10 px-4 py-3 text-sm text-rose-200">
-              <IconAlert className="w-5 h-5 text-rose-400 shrink-0 mt-0.5" />
+            <div className="mt-4 flex items-start gap-2.5 rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">
+              <IconAlert className="w-5 h-5 text-rose-500 shrink-0 mt-0.5" />
               <span>{error}</span>
             </div>
           )}
         </div>
 
         {result && (
-          <div className="mt-6 space-y-4 rounded-[1.5rem] border border-emerald-500/30 bg-emerald-500/10 p-5 text-sm text-emerald-100 shadow-inner">
-            <div className="flex items-center justify-between gap-3 border-b border-emerald-500/20 pb-3">
+          <div className="mt-6 space-y-4 rounded-[1.5rem] border border-emerald-200 bg-emerald-50 p-5 text-sm text-emerald-900 shadow-inner">
+            <div className="flex items-center justify-between gap-3 border-b border-emerald-200 pb-3">
               <div>
-                <p className="text-xs uppercase tracking-[0.25em] text-emerald-300 font-bold">Cita activa</p>
-                <p className="mt-1 text-xl font-bold text-white tracking-wide">{result.cita.codigo}</p>
+                <p className="text-xs uppercase tracking-[0.25em] text-emerald-700 font-bold">Cita activa</p>
+                <p className="mt-1 text-xl font-black tracking-wide text-slate-950">{result.cita.codigo}</p>
               </div>
-              <span className="rounded-full bg-emerald-400/25 border border-emerald-400/30 px-3 py-1 text-xs font-semibold text-white uppercase tracking-wider">
+              <span className="rounded-full border border-emerald-200 bg-white px-3 py-1 text-xs font-bold uppercase tracking-wider text-emerald-700">
                 {result.cita.estado}
               </span>
             </div>
@@ -120,38 +120,38 @@ function PacienteVerCita() {
               <Info label="Estado" value={result.cita.estado} icon={IconShield} />
             </dl>
             
-            <div className="border-t border-emerald-500/15 pt-3 space-y-3">
+            <div className="space-y-3 border-t border-emerald-200 pt-3">
               <div>
-                <p className="text-xs uppercase tracking-[0.25em] text-emerald-300 font-bold flex items-center gap-1.5">
-                  <IconAlert className="w-4 h-4 text-emerald-400" />
+                <p className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-[0.25em] text-emerald-700">
+                  <IconAlert className="w-4 h-4 text-emerald-600" />
                   Alergias
                 </p>
-                <p className="mt-1 text-white bg-slate-950/20 p-3 rounded-xl border border-emerald-400/10">{result.paciente.alergias}</p>
+                <p className="mt-1 rounded-xl border border-emerald-100 bg-white p-3 text-slate-800">{result.paciente.alergias}</p>
               </div>
               <div>
-                <p className="text-xs uppercase tracking-[0.25em] text-emerald-300 font-bold flex items-center gap-1.5">
-                  <IconInfo className="w-4 h-4 text-emerald-400" />
+                <p className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-[0.25em] text-emerald-700">
+                  <IconInfo className="w-4 h-4 text-emerald-600" />
                   Síntomas registrados
                 </p>
-                <p className="mt-1 text-white bg-slate-950/20 p-3 rounded-xl border border-emerald-400/10">{result.paciente.sintomas}</p>
+                <p className="mt-1 rounded-xl border border-emerald-100 bg-white p-3 text-slate-800">{result.paciente.sintomas}</p>
               </div>
             </div>
           </div>
         )}
       </section>
 
-      <section className="rounded-[2rem] border border-slate-800 bg-slate-900/55 p-6 sm:p-8 flex flex-col justify-between">
+      <section className="flex flex-col justify-between rounded-[2rem] border border-teal-100 bg-white/90 p-6 shadow-xl shadow-teal-950/10 backdrop-blur-sm sm:p-8">
         <div className="mb-6 space-y-2">
-          <div className="flex items-center gap-2 text-slate-400">
+          <div className="flex items-center gap-2 text-teal-700">
             <IconShield className="w-5 h-5" />
             <p className="text-xs uppercase tracking-[0.3em] font-bold">Escaneo</p>
           </div>
-          <h2 className="text-2xl font-bold text-white">Valida tu rostro</h2>
-          <p className="text-sm leading-7 text-slate-300">
-            El escáner verificará tus rasgos faciales para autorizar el acceso a tus datos.
+          <h2 className="text-2xl font-black tracking-tight text-slate-950">Valida tu rostro</h2>
+          <p className="text-sm leading-7 text-slate-600">
+            Captura tu rostro para autorizar la consulta. La cámara se apaga automáticamente al cerrar la ventana.
           </p>
         </div>
-        <div className="flex-grow flex flex-col justify-center">
+        <div>
           <FacialScanner onDescriptorCaptured={setDescriptor} buttonLabel="Capturar para consultar" />
         </div>
       </section>
@@ -161,11 +161,11 @@ function PacienteVerCita() {
 
 function Info({ label, value, icon: Icon }) {
   return (
-    <div className="rounded-xl border border-emerald-500/15 bg-slate-950/30 p-3.5 flex items-center gap-3 hover:border-emerald-500/25 transition-colors">
-      {Icon && <Icon className="w-5 h-5 text-emerald-400 shrink-0" />}
+    <div className="flex items-center gap-3 rounded-xl border border-emerald-100 bg-white p-3.5 transition-colors hover:border-emerald-200">
+      {Icon && <Icon className="w-5 h-5 text-emerald-600 shrink-0" />}
       <div>
-        <p className="text-[10px] uppercase tracking-[0.2em] text-emerald-300 font-semibold">{label}</p>
-        <p className="mt-0.5 text-sm font-semibold text-white">{value}</p>
+        <p className="text-[10px] uppercase tracking-[0.2em] text-emerald-700 font-semibold">{label}</p>
+        <p className="mt-0.5 text-sm font-semibold text-slate-900">{value}</p>
       </div>
     </div>
   )
