@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import FacialScanner from '../components/FacialScanner'
-import SigningOutOverlay from '../components/SigningOutOverlay'
 import { useAuth } from '../context/useAuth'
 import { apiRequest } from '../lib/api'
 import { 
@@ -13,7 +12,6 @@ import {
   IconKey, 
   IconAlert, 
   IconCheck, 
-  IconLogout,
   IconBlood,
   IconSpecialty,
   IconInfo
@@ -43,30 +41,27 @@ function reportBackendTimings(response) {
 
 function DoctorDashboard() {
   const navigate = useNavigate()
-  const { session, signOut } = useAuth()
-  const [token, setToken] = useState('')
+  const { session } = useAuth()
+  const token = session?.accessToken
+  const [dashboard, setDashboard] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
-  const [dashboard, setDashboard] = useState(null)
+  const [verifying, setVerifying] = useState(false)
+  const [verification, setVerification] = useState(null)
   const [dni, setDni] = useState('')
   const [descriptor, setDescriptor] = useState(null)
-  const [verification, setVerification] = useState(null)
-  const [verifying, setVerifying] = useState(false)
-  const [signingOut, setSigningOut] = useState(false)
 
   useEffect(() => {
+    if (!session) {
+      navigate('/doctor/login')
+      return
+    }
+
     async function loadDashboard() {
+      const accessToken = session.accessToken
       const startedAt = performance.now()
 
       try {
-        const accessToken = session?.access_token
-
-        if (!accessToken) {
-          navigate('/doctor/login')
-          return
-        }
-
-        setToken(accessToken)
         const data = await apiRequest('/api/doctor/ver-mis-pacientes', {
           token: accessToken,
           onResponse: reportBackendTimings,
@@ -110,16 +105,6 @@ function DoctorDashboard() {
     }
   }
 
-  async function handleSignOut() {
-    try {
-      setSigningOut(true)
-      await signOut()
-      navigate('/doctor/login')
-    } finally {
-      setSigningOut(false)
-    }
-  }
-
   const formatDate = (value) => {
     if (!value) {
       return 'Sin fecha'
@@ -134,7 +119,6 @@ function DoctorDashboard() {
 
   return (
     <>
-      {signingOut && <SigningOutOverlay detail="Estamos cerrando tu sesion medica y bloqueando el acceso al expediente." />}
       <div className="grid gap-8 xl:grid-cols-[0.92fr_1.08fr]">
       <section className="overflow-hidden rounded-[2rem] border border-teal-100 bg-white shadow-2xl shadow-teal-950/10">
         <div className="bg-teal-950 p-6 text-white sm:p-8">
@@ -149,14 +133,6 @@ function DoctorDashboard() {
                 {dashboard?.doctor?.especialidad || 'Sin especialidad'}
               </p>
             </div>
-            <button 
-              type="button" 
-              onClick={handleSignOut} 
-              className="group flex min-h-11 cursor-pointer items-center gap-2 rounded-2xl border border-white/15 bg-white/10 px-4 py-2.5 text-xs font-bold uppercase tracking-wider text-white transition-colors duration-200 hover:border-rose-200/70 hover:bg-rose-400/15 focus:outline-none focus:ring-4 focus:ring-white/20"
-            >
-              <IconLogout className="w-4 h-4 shrink-0 transition-transform group-hover:translate-x-1 duration-300" />
-              <span>Cerrar sesión</span>
-            </button>
           </div>
         </div>
 
