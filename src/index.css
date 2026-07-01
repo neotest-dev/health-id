@@ -107,6 +107,53 @@ body {
   animation: logo-orbit 8s linear infinite;
 }
 
+@keyframes scan-line {
+  0% {
+    top: 0%;
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    top: 100%;
+    opacity: 0.4;
+  }
+}
+
+@keyframes grid-pulse {
+  0%, 100% {
+    opacity: 0.12;
+  }
+  50% {
+    opacity: 0.28;
+  }
+}
+
+@keyframes scan-complete {
+  0% {
+    box-shadow: inset 0 0 0 0 rgba(20, 184, 166, 0);
+  }
+  40% {
+    box-shadow: inset 0 0 60px 8px rgba(20, 184, 166, 0.35);
+  }
+  100% {
+    box-shadow: inset 0 0 0 0 rgba(20, 184, 166, 0);
+  }
+}
+
+.animate-scan-line {
+  animation: scan-line 3s ease-in-out infinite;
+}
+
+.animate-grid-pulse {
+  animation: grid-pulse 3.2s ease-in-out infinite;
+}
+
+.animate-scan-complete {
+  animation: scan-complete 1s ease-out forwards;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -122,7 +169,10 @@ body {
   .animate-biometric-scan,
   .animate-nav-drop,
   .animate-nav-shine,
-  .animate-logo-orbit {
+  .animate-logo-orbit,
+  .animate-scan-line,
+  .animate-grid-pulse,
+  .animate-scan-complete {
     animation: none !important;
   }
 }
