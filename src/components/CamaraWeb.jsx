@@ -23,7 +23,7 @@ function CamaraWeb({ videoRef, status, ready, captured }) {
             stroke="currentColor"
             strokeWidth="0.4"
           >
-            <g className="text-teal-400/50">
+            <g className="text-teal-400/30">
               {/* Face outline */}
               <ellipse cx="100" cy="120" rx="68" ry="88" />
               <ellipse cx="100" cy="120" rx="58" ry="78" />

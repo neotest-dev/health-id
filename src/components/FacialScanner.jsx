@@ -15,11 +15,11 @@ function IconScanFace({ className = 'w-5 h-5', ...props }) {
   )
 }
 
-/* X / Close icon */
-function IconX({ className = 'w-5 h-5', ...props }) {
+/* Arrow left icon */
+function IconArrowLeft({ className = 'w-5 h-5', ...props }) {
   return (
     <svg className={className} fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" {...props}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+      <path strokeLinecap="round" strokeLinejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
     </svg>
   )
 }
@@ -28,8 +28,8 @@ function FacialScanner({ onDescriptorCaptured, buttonLabel = 'Capturar rostro' }
   const videoRef = useRef(null)
   const faceApiRef = useRef(null)
   const streamRef = useRef(null)
-  const closeButtonRef = useRef(null)
-  const [isOpen, setIsOpen] = useState(false)
+  const backButtonRef = useRef(null)
+  const [scanning, setScanning] = useState(false)
   const [status, setStatus] = useState('Presiona el botón para iniciar la captura biométrica.')
   const [ready, setReady] = useState(false)
   const [busy, setBusy] = useState(false)
@@ -37,13 +37,14 @@ function FacialScanner({ onDescriptorCaptured, buttonLabel = 'Capturar rostro' }
   const actionLabel = captured ? 'Actualizar registro facial' : buttonLabel
 
   useEffect(() => {
-    if (!isOpen) {
-      return undefined
-    }
+    if (!scanning) return undefined
 
-    closeButtonRef.current?.focus()
+    backButtonRef.current?.focus()
     const videoElement = videoRef.current
     let mounted = true
+
+    // Lock body scroll while scanning
+    document.body.style.overflow = 'hidden'
 
     async function setupCamera() {
       setReady(false)
@@ -75,7 +76,7 @@ function FacialScanner({ onDescriptorCaptured, buttonLabel = 'Capturar rostro' }
         }
 
         videoRef.current.srcObject = stream
-        setStatus('Cámara lista. Mira al frente y procura buena iluminación.')
+        setStatus('Cámara lista. Centra tu rostro y procura buena iluminación.')
         setReady(true)
       } catch (error) {
         setStatus(error.message.includes('fetch')
@@ -88,6 +89,8 @@ function FacialScanner({ onDescriptorCaptured, buttonLabel = 'Capturar rostro' }
 
     return () => {
       mounted = false
+      document.body.style.overflow = ''
+
       if (streamRef.current) {
         streamRef.current.getTracks().forEach((track) => track.stop())
         streamRef.current = null
@@ -97,7 +100,7 @@ function FacialScanner({ onDescriptorCaptured, buttonLabel = 'Capturar rostro' }
         videoElement.srcObject = null
       }
     }
-  }, [isOpen])
+  }, [scanning])
 
   function stopCamera() {
     if (streamRef.current) {
@@ -110,14 +113,14 @@ function FacialScanner({ onDescriptorCaptured, buttonLabel = 'Capturar rostro' }
     }
   }
 
-  function openModal() {
+  function startScanning() {
     setStatus('Preparando captura biométrica...')
-    setIsOpen(true)
+    setScanning(true)
   }
 
-  function closeModal() {
+  function stopScanning() {
     stopCamera()
-    setIsOpen(false)
+    setScanning(false)
     setReady(false)
     setBusy(false)
     setStatus(captured
@@ -126,9 +129,7 @@ function FacialScanner({ onDescriptorCaptured, buttonLabel = 'Capturar rostro' }
   }
 
   async function handleCapture() {
-    if (!videoRef.current || !ready || !faceApiRef.current) {
-      return
-    }
+    if (!videoRef.current || !ready || !faceApiRef.current) return
 
     setBusy(true)
     setStatus('Analizando rostro...')
@@ -148,16 +149,84 @@ function FacialScanner({ onDescriptorCaptured, buttonLabel = 'Capturar rostro' }
       onDescriptorCaptured(descriptor)
       setCaptured(true)
       setStatus('Rostro capturado correctamente.')
+
+      // Return to form automatically after a brief success feedback
+      setTimeout(() => {
+        stopScanning()
+      }, 1200)
     } catch (error) {
       setStatus(error.message || 'No se pudo capturar el rostro.')
-    } finally {
       setBusy(false)
     }
   }
 
+  /* ── Scanning view (replaces entire viewport) ── */
+  if (scanning) {
+    return (
+      <div className="fixed inset-0 z-[200] flex flex-col bg-slate-950">
+        {/* Top bar */}
+        <div className="relative z-10 flex items-center gap-3 px-4 py-3 sm:px-6 sm:py-4">
+          <button
+            ref={backButtonRef}
+            type="button"
+            onClick={stopScanning}
+            className="flex h-10 w-10 shrink-0 cursor-pointer items-center justify-center rounded-xl bg-white/10 text-white/80 transition-all duration-200 hover:bg-white/20 hover:text-white focus:outline-none focus:ring-2 focus:ring-teal-400/40"
+            aria-label="Volver al formulario"
+          >
+            <IconArrowLeft className="h-5 w-5" />
+          </button>
+          <div>
+            <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-teal-400">
+              Biometria facial
+            </p>
+            <h2 className="text-base font-black tracking-tight text-white sm:text-lg">
+              Escaneo de rostro
+            </h2>
+          </div>
+        </div>
+
+        {/* Camera viewport — fills available space */}
+        <div className="flex flex-1 items-center justify-center px-3 sm:px-6">
+          <div className="w-full max-w-2xl">
+            <CamaraWeb videoRef={videoRef} status={status} ready={ready} captured={captured} />
+          </div>
+        </div>
+
+        {/* Bottom action */}
+        <div className="flex flex-col items-center gap-3 px-4 pb-6 pt-3 sm:pb-8">
+          {captured ? (
+            <div className="flex items-center gap-2 text-sm font-bold text-emerald-400">
+              <IconCheck className="h-5 w-5 shrink-0" />
+              <span>Captura exitosa. Regresando...</span>
+            </div>
+          ) : (
+            <button
+              type="button"
+              onClick={handleCapture}
+              disabled={!ready || busy}
+              className="group flex min-h-14 w-full max-w-xs cursor-pointer items-center justify-center gap-2.5 rounded-2xl bg-teal-500 px-6 py-3.5 text-base font-black text-white shadow-lg shadow-teal-500/30 transition-all duration-200 hover:-translate-y-0.5 hover:bg-teal-400 hover:shadow-teal-400/35 disabled:cursor-not-allowed disabled:bg-slate-700 disabled:text-slate-500 disabled:shadow-none focus:outline-none focus:ring-4 focus:ring-teal-400/30 sm:w-auto sm:min-w-[220px]"
+            >
+              {busy ? (
+                <>
+                  <span className="h-5 w-5 animate-spin rounded-full border-2 border-white/30 border-t-white" />
+                  <span>Escaneando...</span>
+                </>
+              ) : (
+                <>
+                  <IconCamera className="h-5 w-5 shrink-0 transition-transform duration-200 group-hover:scale-110" />
+                  <span>Iniciar escaneo</span>
+                </>
+              )}
+            </button>
+          )}
+        </div>
+      </div>
+    )
+  }
+
+  /* ── Compact preview card (inline in form) ── */
   return (
     <div className="animate-fade-up">
-      {/* ── Compact preview card ── */}
       <div className={`relative overflow-hidden rounded-2xl border px-4 py-4 shadow-sm transition-all duration-300 sm:px-5 ${captured ? 'border-emerald-200 bg-emerald-50/50' : 'border-teal-100 bg-white'}`}>
         <div className="flex items-center gap-4">
           {/* Status icon */}
@@ -181,7 +250,7 @@ function FacialScanner({ onDescriptorCaptured, buttonLabel = 'Capturar rostro' }
           {/* Action button */}
           <button
             type="button"
-            onClick={openModal}
+            onClick={startScanning}
             className="group flex shrink-0 cursor-pointer items-center gap-2 rounded-xl bg-teal-600 px-4 py-2.5 text-sm font-bold text-white shadow-md shadow-teal-600/15 transition-all duration-200 hover:-translate-y-0.5 hover:bg-teal-700 hover:shadow-lg hover:shadow-teal-600/25 focus:outline-none focus:ring-4 focus:ring-teal-100"
           >
             <IconCamera className="h-4 w-4 shrink-0 transition-transform duration-200 group-hover:-rotate-6" />
@@ -190,85 +259,6 @@ function FacialScanner({ onDescriptorCaptured, buttonLabel = 'Capturar rostro' }
           </button>
         </div>
       </div>
-
-      {/* ── Fullscreen modal ── */}
-      {isOpen && (
-        <div
-          className="fixed inset-0 z-[100] flex flex-col bg-slate-950"
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby="facial-scanner-title"
-        >
-          {/* Top bar */}
-          <div className="flex items-center justify-between px-4 py-3 sm:px-6 sm:py-4">
-            <div>
-              <p className="text-[10px] font-bold uppercase tracking-[0.28em] text-teal-500">
-                Biometria facial
-              </p>
-              <h2 id="facial-scanner-title" className="mt-0.5 text-lg font-black tracking-tight text-white sm:text-xl">
-                Registro de rostro
-              </h2>
-            </div>
-            <button
-              ref={closeButtonRef}
-              type="button"
-              onClick={closeModal}
-              className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-xl bg-white/10 text-white/70 backdrop-blur-sm transition-all duration-200 hover:bg-white/20 hover:text-white focus:outline-none focus:ring-2 focus:ring-teal-400/50"
-              aria-label="Cerrar captura facial"
-            >
-              <IconX className="h-5 w-5" />
-            </button>
-          </div>
-
-          {/* Camera viewport — centered and expanded */}
-          <div className="flex flex-1 items-center justify-center px-4 pb-2 sm:px-8">
-            <div className="w-full max-w-3xl">
-              <CamaraWeb videoRef={videoRef} status={status} ready={ready} captured={captured} />
-            </div>
-          </div>
-
-          {/* Bottom controls */}
-          <div className="flex flex-col items-center gap-3 px-4 pb-6 pt-2 sm:pb-8">
-            {/* Capture success message */}
-            {captured && (
-              <div className="flex items-center gap-2 rounded-xl bg-emerald-500/15 px-4 py-2 text-sm font-bold text-emerald-400">
-                <IconCheck className="h-4 w-4 shrink-0" />
-                <span>Captura facial guardada. Puedes repetir o finalizar.</span>
-              </div>
-            )}
-
-            {/* Action buttons */}
-            <div className="flex items-center gap-3">
-              <button
-                type="button"
-                onClick={handleCapture}
-                disabled={!ready || busy}
-                className="group flex min-h-12 cursor-pointer items-center justify-center gap-2.5 rounded-2xl bg-teal-500 px-8 py-3 text-sm font-black text-white shadow-lg shadow-teal-500/25 transition-all duration-200 hover:-translate-y-0.5 hover:bg-teal-400 hover:shadow-teal-400/30 disabled:cursor-not-allowed disabled:bg-slate-700 disabled:text-slate-500 disabled:shadow-none focus:outline-none focus:ring-4 focus:ring-teal-400/30"
-              >
-                {busy ? (
-                  <>
-                    <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />
-                    <span>Escaneando...</span>
-                  </>
-                ) : (
-                  <>
-                    <IconCamera className="h-5 w-5 shrink-0 transition-transform duration-200 group-hover:scale-110" />
-                    <span>{captured ? 'Repetir captura' : 'Iniciar escaneo'}</span>
-                  </>
-                )}
-              </button>
-
-              <button
-                type="button"
-                onClick={closeModal}
-                className="min-h-12 cursor-pointer rounded-2xl bg-white/10 px-6 py-3 text-sm font-bold text-white/80 backdrop-blur-sm transition-all duration-200 hover:bg-white/20 hover:text-white focus:outline-none focus:ring-2 focus:ring-white/20"
-              >
-                {captured ? 'Finalizar' : 'Cancelar'}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   )
 }
