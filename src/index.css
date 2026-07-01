@@ -142,8 +142,92 @@ body {
   }
 }
 
+@keyframes scan-busy {
+  0% {
+    top: 0%;
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  85% {
+    opacity: 1;
+  }
+  100% {
+    top: 100%;
+    opacity: 0;
+  }
+}
+
+@keyframes ring-expand {
+  0% {
+    transform: scale(0.5) translate(-50%, -50%);
+    opacity: 0.9;
+    box-shadow: 0 0 0 0 rgba(20, 184, 166, 0.5);
+  }
+  70% {
+    opacity: 0.6;
+  }
+  100% {
+    transform: scale(2.5) translate(-50%, -50%);
+    opacity: 0;
+    box-shadow: 0 0 0 60px rgba(20, 184, 166, 0);
+  }
+}
+
+@keyframes bracket-glow {
+  0%, 100% {
+    opacity: 0.4;
+    filter: drop-shadow(0 0 4px rgba(20, 184, 166, 0.3));
+  }
+  50% {
+    opacity: 1;
+    filter: drop-shadow(0 0 10px rgba(20, 184, 166, 0.6));
+  }
+}
+
+@keyframes wireframe-breathe {
+  0%, 100% {
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 0.45;
+  }
+}
+
+@keyframes ref-dot {
+  0%, 100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes capture-pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(5, 150, 105, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(5, 150, 105, 0.1);
+  }
+}
+
+@keyframes modal-overlay-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 .animate-scan-line {
   animation: scan-line 3s ease-in-out infinite;
+}
+
+.animate-scan-busy {
+  animation: scan-busy 1.2s ease-in-out infinite;
 }
 
 .animate-grid-pulse {
@@ -152,6 +236,30 @@ body {
 
 .animate-scan-complete {
   animation: scan-complete 1s ease-out forwards;
+}
+
+.animate-ring-expand {
+  animation: ring-expand 0.8s ease-out forwards;
+}
+
+.animate-bracket-glow {
+  animation: bracket-glow 2.4s ease-in-out infinite;
+}
+
+.animate-wireframe-breathe {
+  animation: wireframe-breathe 2.8s ease-in-out infinite;
+}
+
+.animate-ref-dot {
+  animation: ref-dot 2s ease-in-out infinite;
+}
+
+.animate-capture-pulse {
+  animation: capture-pulse 2s ease-in-out infinite;
+}
+
+.animate-modal-overlay-in {
+  animation: modal-overlay-in 200ms ease-out both;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -171,8 +279,15 @@ body {
   .animate-nav-shine,
   .animate-logo-orbit,
   .animate-scan-line,
+  .animate-scan-busy,
   .animate-grid-pulse,
-  .animate-scan-complete {
+  .animate-scan-complete,
+  .animate-ring-expand,
+  .animate-bracket-glow,
+  .animate-wireframe-breathe,
+  .animate-ref-dot,
+  .animate-capture-pulse,
+  .animate-modal-overlay-in {
     animation: none !important;
   }
 }
