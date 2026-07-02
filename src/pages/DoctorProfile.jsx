@@ -169,7 +169,7 @@ function DoctorProfile() {
             type="password" 
             value={form.newPassword} 
             onChange={updateField} 
-            placeholder="Mínimo 8 caracteres" 
+            placeholder="Nueva contraseña" 
             className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3.5 text-sm font-medium text-slate-900 outline-none transition-colors duration-200 placeholder:text-slate-400 focus:border-teal-500 focus:ring-4 focus:ring-teal-100" 
           />
         </label>

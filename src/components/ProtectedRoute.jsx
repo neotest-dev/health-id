@@ -14,7 +14,7 @@ function ProtectedRoute({ children, allowedRole }) {
   const { role, loading, isAuthenticated } = useAuth()
 
   if (loading) {
-    return <Spinner centered label="Validando credenciales" description="Estamos confirmando tu acceso seguro al modulo solicitado." />
+    return <Spinner centered label="Verificando acceso" description="Un momento por favor." />
   }
 
   if (!isAuthenticated) {

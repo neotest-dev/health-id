@@ -48,7 +48,7 @@ function DoctorLogin() {
 
       navigate(hasCompletedProfile ? '/doctor/dashboard' : '/doctor/perfil')
     } catch (requestError) {
-      setError(requestError.message || 'No se pudo iniciar sesión.')
+      setError('Credenciales inválidas. Verifica tus datos e intenta de nuevo.')
     } finally {
       if (import.meta.env.DEV) {
         console.info(`[timing] doctor.login-flow: ${Math.round(performance.now() - startedAt)}ms`)
@@ -66,7 +66,7 @@ function DoctorLogin() {
         </div>
         <h1 className="text-3xl font-black tracking-tight text-slate-950">Ingreso del médico</h1>
         <p className="text-sm leading-7 text-slate-600">
-          Usa tu DNI como usuario. En el alta inicial el password temporal también es el DNI.
+          Ingresa tu DNI y la contraseña que te fue entregada en el alta.
         </p>
       </div>
 

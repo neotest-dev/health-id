@@ -1,6 +1,6 @@
 import { IconLogout } from './Icons'
 
-function SigningOutOverlay({ message = 'Cerrando sesion segura', detail = 'Estamos limpiando la sesion y protegiendo tu acceso.' }) {
+function SigningOutOverlay({ message = 'Cerrando sesión', detail = 'Hasta pronto.' }) {
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center bg-teal-950/35 px-4 backdrop-blur-xl">
       <div className="relative w-full max-w-lg overflow-hidden rounded-[2rem] border border-teal-100 bg-white/94 p-8 text-center shadow-2xl shadow-teal-950/20 sm:p-10">

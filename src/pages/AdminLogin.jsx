@@ -47,7 +47,7 @@ function AdminLogin() {
 
       navigate('/admin', { replace: true })
     } catch (requestError) {
-      setError(requestError.message || 'No se pudo iniciar sesion como administrador.')
+      setError('Credenciales inválidas. Verifica tus datos e intenta de nuevo.')
     } finally {
       setAuthLoading(false)
     }
@@ -76,7 +76,7 @@ function AdminLogin() {
             name="email"
             value={loginForm.email}
             onChange={updateState}
-            placeholder="admin@healthid.org"
+            placeholder="tu correo electrónico"
             className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3.5 text-sm font-medium text-slate-900 outline-none transition-colors duration-200 placeholder:text-slate-400 focus:border-teal-500 focus:ring-4 focus:ring-teal-100"
           />
         </label>

@@ -102,7 +102,7 @@ function AdminPanel() {
       title: editingDoctorId ? 'Guardar cambios del médico' : 'Crear médico',
       message: editingDoctorId
         ? 'Se actualizarán los datos profesionales del médico seleccionado.'
-        : 'Se creará el acceso técnico del médico con contraseña temporal basada en su DNI.',
+        : 'Se creará el acceso técnico del médico con una contraseña temporal.',
       confirmLabel: editingDoctorId ? 'Guardar cambios' : 'Crear médico',
       onConfirm: async () => {
         const data = await apiRequest('/api/admin/doctores', {
@@ -114,7 +114,7 @@ function AdminPanel() {
         setEditingDoctorId(null)
         setSuccess(editingDoctorId
           ? 'Médico actualizado correctamente.'
-          : `Médico creado. Email técnico: ${data.doctor.email}. Contraseña temporal: DNI.`)
+          : `Médico creado. Email técnico: ${data.doctor.email}.`)
         await loadProtectedData(session.access_token)
       },
     })
